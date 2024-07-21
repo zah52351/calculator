@@ -2,6 +2,8 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QLineEdit>
+#include "Button.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,47 +21,36 @@ public:
 
 private slots:
 
-    void on_plainTextEdit_textChanged(int);
+    void digitClicked();
+    void unaryOperatorClicked();
+    void additiveOperatorClicked();
+    void multiplicativeOperatorClicked();
+    void equalClicked();
+    void pointClicked();
+    void changeSignClicked();
+    void backspaceClicked();
+    void clear();
+    void clearAll();
+    void clearMemory();
+    void readMemory();
+    void setMemory();
+    void addToMemory();
 
-signals:
-
-    void on_num0Button_clicked();
-
-    void on_numCommaButton_clicked();
-
-    void on_numEqualButton_clicked();
-
-    void on_num1Button_clicked();
-
-    void on_num2Button_clicked();
-
-    void on_num3Button_clicked();
-
-    void on_num4Button_clicked();
-
-    void on_num5Button_clicked();
-
-    void on_num6Button_clicked();
-
-    void on_num7Button_clicked();
-
-    void on_num8Button_clicked();
-
-    void on_num9Button_clicked();
-
-    void on_numPlusButton_clicked();
-
-    void on_numMinusButton_clicked();
-
-    void on_numMultiplyButton_clicked();
-
-    void on_numDivideButton_clicked();
-
-    void on_numPercentButton_clicked();
-
-    void on_numSwitchMinusButton_clicked();
 
 private:
     Ui::Dialog *ui;
+    double sumInMemory;
+    double sumSoFar;
+    double factorSoFar;
+    QString pendingAdditiveOperator;
+    QString pendingMultiplicativeOperator;
+    bool waitingForOperand;
+    QLineEdit* display;
+    enum { NumDigitButtons = 10 };
+    Button* digitButtons[NumDigitButtons];
+    template<typename PointerToMemberFunction>
+    Button* createButton(const QString& text, const PointerToMemberFunction& member);
+    void abortOperation();
+    bool calculate(double rightOperand, const QString& pendingOperator);
 };
 #endif // DIALOG_H
